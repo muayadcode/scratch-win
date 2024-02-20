@@ -6,25 +6,24 @@
 
 
 
-.container {
-    width: 31em;
-    height: 31em;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
+#scratchContainer {
+    margin: 2rem;
+    position: relative;
     border-radius: 0.6em;
+    height: 100%;
+    min-height: 400px;
+    max-height: 600px;
+    max-width: 800px;
+    overflow: hidden;
 }
 
 .base,
 #scratch {
-    height: 200px;
-    width: 200px;
     position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
     text-align: center;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
     cursor: grabbing;
     border-radius: 0.3em;
 }
@@ -39,10 +38,7 @@
     box-shadow: 0 1.2em 2.5em rgba(16, 2, 96, 0.15);
 }
 
-img {
 
-    width: 100%;
-}
 
 .base h3 {
     font-weight: 600;

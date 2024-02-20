@@ -1,0 +1,75 @@
+.flexWrapCenter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.flexCol {
+    display: flex;
+    flex-direction: column;
+}
+
+.gap1 {
+    gap: 1rem;
+}
+
+.child55 {
+    flex: 1 100%;
+}
+
+.child30 {
+    flex: 1 32%;
+}
+
+.child40 {
+    flex: 1 38%;
+}
+
+.child60 {
+    flex: 1 59%;
+}
+
+.child100 {
+    flex: 1 100%;
+}
+
+.child50 {
+    flex: 1 48%;
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.displayNone {
+    display: none;
+}
+
+.displayBlock {
+    display: block;
+}
+
+.text22 {
+    font-size: 22px;
+}
+
+.text20 {
+    font-size: 20px;
+}
+
+.text24 {
+    font-size: 24px;
+}
+
+.semiBold {
+    font-weight: 600;
+}
+
+.light {
+    font-weight: 300;
+}
+
+.extraLight {
+    font-weight: 100;
+}
