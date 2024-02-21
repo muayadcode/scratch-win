@@ -1,87 +1,105 @@
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 400;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-family: "Poppins", sans-serif;
+	font-weight: 400;
 }
 
 body {
-  background-color: #f7f3e5;
+	background-color: #f7f3e5;
 }
 
 span {
-  display: flex;
-  gap: 10px;
+	display: flex;
+	gap: 10px;
 }
 
 p {
-  font-size: 16px;
+	font-size: 16px;
 }
 
 .cardStyle {
-  border-radius: 25px;
-  background-color: #badc58;
-  text-align: center;
-  margin-top: 50px;
-  padding: 50px;
-  gap: 15px;
-  margin: 1rem;
-  max-width: 800px;
-  align-items: center;
+	border-radius: 25px;
+	background-color: #badc58;
+	text-align: center;
+	margin-top: 50px;
+	padding: 50px;
+	gap: 15px;
+	margin: 1rem;
+	max-width: 800px;
+	align-items: center;
 }
 
-
 .blueButton {
-  background-color: #282e65;
-  width: 200px;
-  border: none;
-  padding: 10px;
-  margin: 0 auto;
-  color: #eefef1;
-  border-radius: 8px;
-  font-size: 2.5rem;
-  /* margin-top: 60px; */
-  cursor: pointer;
+	background-color: #282e65;
+	width: 200px;
+	border: none;
+	padding: 10px;
+	margin: 0 auto;
+	color: #eefef1;
+	border-radius: 0.5rem;
+	font-size: 2.5rem;
+	/* margin-top: 60px; */
+	cursor: pointer;
 }
 
 .blueButton a {
-  text-decoration: none;
-  color: #eefef1;
+	text-decoration: none;
+	color: #eefef1;
 }
 
+.blueButton:hover {
+	background-color: #0074a9;
+}
+
+.greenButton {
+	background-color: #badc58;
+	width: 200px;
+	border-radius: 1rem;
+	font-size: 2.5rem;
+	padding: 10px;
+	margin: 0 auto;
+	cursor: pointer;
+	color: black;
+	border: 1px solid #082d15;
+}
+
+.greenButton:hover {
+	background-color: #39b665;
+}
 
 strong {
-  font-weight: bold;
+	font-weight: bold;
 }
 
 .line {
-  display: block;
-  height: 2px;
-  background-color: #000;
-  margin: 0 auto;
-  width: 90%;
+	display: block;
+	height: 2px;
+	background-color: #000;
+	margin: 0 auto;
+	width: 90%;
 }
 
 h2 {
-  font-weight: bold;
-  font-size: 1.5rem;
+	font-weight: bold;
+	font-size: 1.5rem;
 }
 
 .modalBackground {
-  position: "absolute";
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: "rgba(0, 0, 0, 0.15)";
+	position: "absolute";
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background: "rgba(0, 0, 0, 0.15)";
 }
 
 .modal {
-  position: absolute;
-  background: white;
-  top: 25;
-  left: 10%;
-  right: 10%;
-  padding: 1rem;
+	position: absolute;
+	background: white;
+	top: 25;
+	left: 10%;
+	right: 10%;
+	padding: 1rem;
 }
