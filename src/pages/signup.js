@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, where, query, getDocs } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { db, auth } from "./firebase-config";
 
 class FormData {
-  constructor(fName, lName, address, postal, province, city, phone, email, date, password) {
+  constructor(fName, lName, address, postal, province, city, phone, email, date, password, lastPlayed) {
     this.fName = fName;
     this.lName = lName;
     this.address = address;
@@ -15,6 +15,7 @@ class FormData {
     this.email = email;
     this.password = password;
     this.date = date;
+    this.lastPlayed = lastPlayed; // Add last played variable
   }
 
   setMinorFields(GuardianNameFirst, GuardianNameLast, parentEmail, GuardianNumber) {
@@ -27,7 +28,7 @@ class FormData {
 }
 
 function SignUp() {
-  const [formData, setFormData] = useState(new FormData('', '', '', '', '', '', '', '', '', ''));
+  const [formData, setFormData] = useState(new FormData('', '', '', '', '', '', '', '', '', '', ''));
 
   useEffect(() => {
     // Load form data from local storage if available
@@ -37,10 +38,33 @@ function SignUp() {
     }
   }, []);
 
+  const checkLastPlayed = async (email) => {
+    try {
+      const myQuery = query(collection(db, "accounts"), where("email", "==", email));
+      const querySnapshot = await getDocs(myQuery);
+      if (!querySnapshot.empty) {
+        const data = querySnapshot.docs[0].data();
+        const lastPlayed = data.lastPlayed;
+        if (lastPlayed) {
+          const lastPlayedTime = new Date(lastPlayed).getTime();
+          const currentTime = new Date().getTime();
+          const differenceInHours = (currentTime - lastPlayedTime) / (1000 * 3600);
+          if (differenceInHours < 72) {
+            throw new Error("You can only play once every 72 hours.");
+          }
+        }
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const handleSignUp = async (e) => {
     e.preventDefault();
 
     try {
+      await checkLastPlayed(formData.email);
+      
       // Create user account with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       
@@ -60,6 +84,7 @@ function SignUp() {
         GuardianNameLast: formData.GuardianNameLast,
         parentEmail: formData.parentEmail,
         GuardianNumber: formData.GuardianNumber,
+        lastPlayed: new Date().toISOString(), // Update last played time
       });
 
       console.log('User signed up successfully!');

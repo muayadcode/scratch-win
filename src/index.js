@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 // import Form from './pages/Form.js';
 import ScratchCard from './pages/Contest.js';
 import Signup from './pages/signup.js';
+import Login from './pages/signin.js';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 
