@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import lose from "../images/losing.png";
+import coupon from "../images/rawCabbageCoupon.png";
 
 function Lose() {
 	return (
@@ -16,8 +17,8 @@ function Lose() {
 				As a token of our gratitude, here's a little something to brighten your day:
 			</strong>
 
-			<div></div>
-			<h2 className='textLeft'>Coupon for $2.00 Off.</h2>
+			<img src={coupon} alt='Raw Cabbage Coupon' />
+			{/* <h2 className='textLeft'>Coupon for $2.00 Off.</h2> */}
 			<p className='textLeft'>
 				Enjoy a special coupon for $2.00 off any purchase over $50 from
 				Raw-Cabbage-on-a-stick Hut. Treat yourself to a delicious meal or snack on
