@@ -10,9 +10,9 @@ import {
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { db, auth } from "./firebase-config";
 
-export const checkLastPlayed = async (email) => {
+const checkLastPlayedFirebase = async (email) => {
+	console.log(email);
 	try {
-		let lastPlayed;
 		const myQuery = query(
 			collection(db, "accounts"),
 			where("email", "==", email)
@@ -20,15 +20,21 @@ export const checkLastPlayed = async (email) => {
 		const querySnapshot = await getDocs(myQuery);
 		if (!querySnapshot.empty) {
 			const data = querySnapshot.docs[0].data();
-			const lastPlayed = data.lastPlayed;
-			if (lastPlayed) {
-				const lastPlayedTime = new Date(lastPlayed).getTime();
-				const currentTime = new Date().getTime();
-				return (currentTime - lastPlayedTime) / (1000 * 3600);
-			}
+			return data.lastPlayed;
 		}
 	} catch (error) {
 		throw error;
+	}
+};
+
+export const checkLastPlayed = async (email) => {
+	console.log(email);
+	if (getLocalData().lastPlayed != null) {
+		const lastPlayed = getLocalData().lastPlayed;
+
+		return lastPlayed;
+	} else {
+		return checkLastPlayedFirebase(email);
 	}
 };
 
@@ -41,7 +47,8 @@ export const getFirebaseData = async (email) => {
 		const querySnapshot = await getDocs(myQuery);
 		if (!querySnapshot.empty) {
 			const data = querySnapshot.docs[0].data();
-			saveDataLocal(data);
+			console.log(data);
+			saveDataLocal(data, data.lastPlayed);
 			return data;
 		}
 	} catch (error) {
@@ -76,6 +83,7 @@ export const saveDataFirebase = async (formData) => {
 				GuardianNumber: formData.guardianPhone,
 				consented: formData.consented,
 				sponsors: formData.sponsors,
+				secret: formData.secret,
 			});
 		} else {
 			await addDoc(collection(db, "accounts"), {
@@ -91,6 +99,7 @@ export const saveDataFirebase = async (formData) => {
 				date: formData.date,
 				consented: formData.consented,
 				sponsors: formData.sponsors,
+				secret: formData.secret,
 			});
 		}
 
@@ -123,19 +132,22 @@ export const saveLastPlayed = async () => {
 	}
 };
 
-const saveDataLocal = (formData, lastPlayed) => {
+export const saveDataLocal = (formData, lastPlayed) => {
 	let local = {
 		fName: formData.fName,
 		email: formData.email,
+		secret: formData.secret,
 	};
-	console.log("local");
-	lastPlayed ?? (local.lastPlayed = lastPlayed);
+	if (lastPlayed != null) {
+		local.lastPlayed = lastPlayed;
+	}
 
 	localStorage.setItem("formData", JSON.stringify(local));
 };
 
 export const getLocalData = () => {
 	const storedFormData = localStorage.getItem("formData");
+	console.log(storedFormData);
 	if (storedFormData) {
 		return JSON.parse(storedFormData);
 	}

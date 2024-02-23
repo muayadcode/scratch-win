@@ -16,10 +16,11 @@ import {
 	getPrize,
 	saveLastPlayed,
 	getAvailablePrizes,
+	saveDataLocal,
 } from "../firebase-functions";
 
 const Contest = ({}) => {
-	const [canPlay, setCanPlay] = useState();
+	const [canPlay, setCanPlay] = useState(false);
 	const [win, setWin] = useState(false);
 	const [prize, setPrize] = useState();
 	const localData = getLocalData();
@@ -29,25 +30,37 @@ const Contest = ({}) => {
 
 	useEffect(() => {
 		// Load form data from local storage if available
-
-		if (localData !== null) {
+		if (localData.email != null) {
+			console.log("localData");
 			checkLastPlayed(localData.email).then((lastPlayed) => {
+				saveDataLocal(localData, lastPlayed);
 				console.log(lastPlayed);
-				if (lastPlayed < 72) {
-					setCanPlay(false);
+				if (lastPlayed != null) {
+					const lastPlayedTime = new Date(lastPlayed).getTime();
+					const currentTime = new Date().getTime();
+					const hours = (currentTime - lastPlayedTime) / (1000 * 3600);
+					if (hours < 72) {
+						setCanPlay(false);
+					} else {
+						setCanPlay(true);
+					}
 				} else {
 					setCanPlay(true);
 				}
 			});
 		} else {
-			navigate("/home");
+			navigate("/");
 		}
-		const numOfPeople = 69420;
+
 		getAvailablePrizes().then((prizes) => {
 			const numOfPrizes = prizes.length;
-			const winChance = numOfPrizes / numOfPeople;
+			if (localData.secret == true) {
+				setWin(true);
+			} else {
+				const winChance = numOfPrizes / 69240;
+				setWin(Math.random() < winChance ? true : false);
+			}
 			// console.log(winChance);
-			setWin(Math.random() < winChance ? true : false);
 		});
 
 		getPrize().then((prize) => {
@@ -61,7 +74,7 @@ const Contest = ({}) => {
 		}
 	}, [finished]);
 
-	if (!canPlay) {
+	if (canPlay == false) {
 		//maybe add in how many hours
 		return (
 			<main className='contest'>
