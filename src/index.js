@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-// import Form from './pages/Form.js';
+
 import Contest from "./pages/Contest.js";
 import Form from "./pages/Form.js";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
@@ -13,9 +13,11 @@ import ScrollToTop from "./scrollToTop";
 import "./index.css";
 import "./utility.css";
 
+
 export default function App() {
 	// let location = useLocation();
 	// let background = location.state && location.state.background;
+
 
 	return (
 		<BrowserRouter>
@@ -31,6 +33,7 @@ export default function App() {
 			{/* {background && <Route path="/img/:id" children={<Modal />} />} */}
 		</BrowserRouter>
 	);
+
 }
 
 const container = document.getElementById("root");
