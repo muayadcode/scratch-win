@@ -56,6 +56,20 @@ export const getFirebaseData = async (email) => {
 	}
 };
 
+export const doesEmailExist = async (email) => {
+	try {
+		const myQuery = query(
+			collection(db, "accounts"),
+			where("email", "==", email)
+		);
+		const querySnapshot = await getDocs(myQuery);
+		return !querySnapshot.empty;
+	} catch (error) {
+		console.error("Error checking email:", error.message);
+	}
+	return false;
+};
+
 export const saveDataFirebase = async (formData) => {
 	try {
 		// Create user account with email and password
