@@ -42,7 +42,7 @@ function FormSuccess() {
 					<strong>Phone Number:</strong> {formData.phone}
 				</p>
 				<p>
-					<strong>Street Address:</strong> {formData.street}
+					<strong>Street Address:</strong> {formData.address}
 				</p>
 				<p>
 					<strong>City:</strong> {formData.city}

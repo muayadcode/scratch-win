@@ -73,26 +73,16 @@ const Contest = ({}) => {
 			saveLastPlayed(localData.email);
 		}
 	}, [finished]);
-
+	console.log(finished);
 	return (
 		<>
-			{canPlay == false ? (
-				<main className='contest'>
-					<section className='innerCard flexCol gap1 flexCenter'>
-						<h2>Sorry, you've already played within the last 72 hours :sadface:</h2>
-						<Link to='/'>
-							<button className='blueButton'>Back to Home </button>
-						</Link>
-					</section>
-				</main>
-			) : null}
 			{finished == true ? (
 				win == true ? (
 					<Win prize={prize} />
 				) : (
 					<Lose />
 				)
-			) : (
+			) : canPlay ? (
 				<main className='contest'>
 					<h1 className='textCenter'>Good Luck {localData.fName}!</h1>
 					<ScratchCard setFinished={setFinished} isWin={win} />
@@ -115,6 +105,15 @@ const Contest = ({}) => {
 						</p>
 						<Link to='/legal' state={"/contest"}>
 							Terms and Conditions
+						</Link>
+					</section>
+				</main>
+			) : (
+				<main className='contest'>
+					<section className='innerCard flexCol gap1 flexCenter'>
+						<h2>Sorry, you've already played within the last 72 hours :sadface:</h2>
+						<Link to='/'>
+							<button className='blueButton'>Back to Home </button>
 						</Link>
 					</section>
 				</main>
