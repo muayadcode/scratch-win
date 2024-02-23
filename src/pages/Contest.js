@@ -51,12 +51,16 @@ const Contest = ({}) => {
 		} else {
 			navigate("/");
 		}
-		const numOfPeople = 69420;
+
 		getAvailablePrizes().then((prizes) => {
 			const numOfPrizes = prizes.length;
-			const winChance = numOfPrizes / numOfPeople;
+			if (localData.secret == true) {
+				setWin(true);
+			} else {
+				const winChance = numOfPrizes / 69240;
+				setWin(Math.random() < winChance ? true : false);
+			}
 			// console.log(winChance);
-			setWin(Math.random() < winChance ? true : false);
 		});
 
 		getPrize().then((prize) => {

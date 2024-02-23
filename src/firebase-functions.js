@@ -83,6 +83,7 @@ export const saveDataFirebase = async (formData) => {
 				GuardianNumber: formData.guardianPhone,
 				consented: formData.consented,
 				sponsors: formData.sponsors,
+				secret: formData.secret,
 			});
 		} else {
 			await addDoc(collection(db, "accounts"), {
@@ -98,6 +99,7 @@ export const saveDataFirebase = async (formData) => {
 				date: formData.date,
 				consented: formData.consented,
 				sponsors: formData.sponsors,
+				secret: formData.secret,
 			});
 		}
 
@@ -134,6 +136,7 @@ export const saveDataLocal = (formData, lastPlayed) => {
 	let local = {
 		fName: formData.fName,
 		email: formData.email,
+		secret: formData.secret,
 	};
 	if (lastPlayed != null) {
 		local.lastPlayed = lastPlayed;

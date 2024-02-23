@@ -19,7 +19,8 @@ function Form() {
 			date,
 			password,
 			sponsors,
-			consented
+			consented,
+			secret
 		) {
 			this.fName = fName;
 			this.lName = lName;
@@ -34,6 +35,7 @@ function Form() {
 			this.sponsors = sponsors;
 			this.consented = consented;
 			this.isMinor = false;
+			this.secret = false;
 		}
 
 		setMinorFields(
@@ -111,7 +113,7 @@ function Form() {
 	const [isMinor, setIsMinor] = useState();
 	// const [fieldsSecretOpen, setFieldsSecretOpen] = useState(false);
 	const navigate = useNavigate();
-
+	const [secret, setSecret] = useState(false);
 	let secretOpen = false;
 
 	let formFields = [
@@ -163,12 +165,14 @@ function Form() {
 		),
 	];
 
-	function secret(value) {
+	function secretCheck(value) {
 		const secretPattern = /^(001100010010011110100001101101110011)$/;
 		if (secretPattern.test(value) && !secretOpen) {
 			window.open("https://www.youtube.com/watch?v=0Whn0YzNG4s", "_blank");
 			secretOpen = true;
+			return true;
 		}
+		return false;
 	}
 
 	const formCheck = (e) => {
@@ -209,6 +213,8 @@ function Form() {
 			consented: e.target.elements["consented"].checked,
 		};
 
+		let formSecret = false;
+
 		let formFieldsIsMinorTemp;
 		if (isMinor) {
 			formFieldsIsMinorTemp = {
@@ -228,7 +234,7 @@ function Form() {
 			});
 		}
 		formFields.forEach((field) => {
-			secret(formFieldsTemp[`${field.id}`]);
+			formSecret = secretCheck(formFieldsTemp[`${field.id}`]);
 			if (!field.check(formFieldsTemp[`${field.id}`])) {
 				errorsTemp[field.id] = field.errorMsg;
 				// console.log(errorsTemp[`${field.id}`]);
@@ -246,13 +252,21 @@ function Form() {
 			console.log("FAIL");
 		} else {
 			if (isMinor) {
-				const data = saveFormData(formFieldsTemp, formFieldsIsMinorTemp);
+				const data = saveFormData(
+					formFieldsTemp,
+					formFieldsIsMinorTemp,
+					formSecret
+				);
 				saveDataFirebase(data);
 				navigate("/success", {
 					state: { formData: data },
 				});
 			} else {
-				const data = saveFormData(formFieldsTemp, formFieldsIsMinorTemp);
+				const data = saveFormData(
+					formFieldsTemp,
+					formFieldsIsMinorTemp,
+					formSecret
+				);
 				saveDataFirebase(data);
 				navigate("/success", { state: { formData: data } });
 			}
@@ -274,7 +288,8 @@ function Form() {
 			formfields.date,
 			formfields.password,
 			formfields.sponsors,
-			formfields.consented
+			formfields.consented,
+			secret
 		);
 		if (formFieldsIsMinor !== undefined) {
 			formData.setMinorFields(
