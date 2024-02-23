@@ -64,6 +64,7 @@ export const saveDataFirebase = async (formData) => {
 			formData.email,
 			formData.password
 		);
+		saveDataLocal(formData);
 
 		if (formData.isMinor) {
 			await addDoc(collection(db, "accounts"), {
@@ -77,10 +78,10 @@ export const saveDataFirebase = async (formData) => {
 				phone: formData.phone,
 				email: formData.email,
 				date: formData.date,
-				GuardianNameFirst: formData.guardianfName,
-				GuardianNameLast: formData.guardianlName,
-				parentEmail: formData.guardianEmail,
-				GuardianNumber: formData.guardianPhone,
+				guardianfName: formData.guardianfName,
+				guardianlName: formData.guardianlName,
+				guardianEmail: formData.guardianEmail,
+				guardianPhone: formData.guardianPhone,
 				consented: formData.consented,
 				sponsors: formData.sponsors,
 				secret: formData.secret,
@@ -105,7 +106,6 @@ export const saveDataFirebase = async (formData) => {
 
 		// Add user information to Firestore
 
-		saveDataLocal(formData);
 		console.log("User signed up successfully!");
 	} catch (error) {
 		console.error("Error signing up:", error.message);
