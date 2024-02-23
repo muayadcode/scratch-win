@@ -1,0 +1,24 @@
+.legal .innerCard {
+    margin: 2rem 0;
+}
+
+.legal h2 {
+    margin-bottom: 0.25rem;
+    font-size: 1.4rem;
+    font-weight: 400;
+    text-align: left;
+}
+
+.legal p {
+    font-size: 1.125rem;
+    font-weight: 300;
+    margin-bottom: 1.25rem;
+    text-align: left;
+}
+
+.legal h1 {
+    font-size: 3.125rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    text-align: left;
+}
