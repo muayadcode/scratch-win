@@ -74,21 +74,18 @@ const Contest = ({}) => {
 		}
 	}, [finished]);
 
-	if (canPlay == false) {
-		//maybe add in how many hours
-		return (
-			<main className='contest'>
-				<section className='innerCard flexCol gap1 flexCenter'>
-					<h2>Sorry, you've already played within the last 72 hours :sadface:</h2>
-					<Link to='/'>
-						<button className='blueButton'>Back to Home </button>
-					</Link>
-				</section>
-			</main>
-		);
-	}
 	return (
 		<>
+			{canPlay == false ? (
+				<main className='contest'>
+					<section className='innerCard flexCol gap1 flexCenter'>
+						<h2>Sorry, you've already played within the last 72 hours :sadface:</h2>
+						<Link to='/'>
+							<button className='blueButton'>Back to Home </button>
+						</Link>
+					</section>
+				</main>
+			) : null}
 			{finished == true ? (
 				win == true ? (
 					<Win prize={prize} />

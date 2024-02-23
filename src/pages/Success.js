@@ -57,10 +57,10 @@ function FormSuccess() {
 				{formData.isMinor ? (
 					<div id='parentInfo'>
 						<p>
-							<strong>Guardian's First Name:</strong> {formData.guardianNameFirst}
+							<strong>Guardian's First Name:</strong> {formData.guardianfName}
 						</p>
 						<p>
-							<strong>Guardian's Last Name:</strong> {formData.guardianNameLast}
+							<strong>Guardian's Last Name:</strong> {formData.guardianlName}
 						</p>
 						<p>
 							<strong>Guardian's Email:</strong> {formData.guardianEmail}

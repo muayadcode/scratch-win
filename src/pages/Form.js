@@ -35,20 +35,15 @@ function Form() {
 			this.sponsors = sponsors;
 			this.consented = consented;
 			this.isMinor = false;
-			this.secret = false;
+			this.secret = secret;
 		}
 
-		setMinorFields(
-			guardianNameFirst,
-			guardianNameLast,
-			guardianEmail,
-			guardianNumber
-		) {
+		setMinorFields(guardianfName, guardianlName, guardianEmail, guardianPhone) {
 			this.isMinor = true;
-			this.guardianNameFirst = guardianNameFirst;
-			this.guardianNameLast = guardianNameLast;
+			this.guardianfName = guardianfName;
+			this.guardianlName = guardianlName;
 			this.guardianEmail = guardianEmail;
-			this.guardianNumber = guardianNumber;
+			this.guardianPhone = guardianPhone;
 		}
 	}
 
@@ -113,9 +108,9 @@ function Form() {
 	const [isMinor, setIsMinor] = useState();
 	// const [fieldsSecretOpen, setFieldsSecretOpen] = useState(false);
 	const navigate = useNavigate();
-	const [secret, setSecret] = useState(false);
+	// const [formSecret, setFormSecret] = useState();
 	let secretOpen = false;
-
+	let formSecret = false;
 	let formFields = [
 		new FormField("Last Name", "*Please enter a valid name.", charReg, "lName"),
 		new FormField("Address", "*Invalid Address", hasCharsNum, "st"),
@@ -170,9 +165,8 @@ function Form() {
 		if (secretPattern.test(value) && !secretOpen) {
 			window.open("https://www.youtube.com/watch?v=0Whn0YzNG4s", "_blank");
 			secretOpen = true;
-			return true;
+			formSecret = true;
 		}
-		return false;
 	}
 
 	const formCheck = (e) => {
@@ -213,16 +207,16 @@ function Form() {
 			consented: e.target.elements["consented"].checked,
 		};
 
-		let formSecret = false;
-
 		let formFieldsIsMinorTemp;
+		console.log(isMinor);
+		formFieldsIsMinorTemp = {
+			guardianfName: e.target.elements["guardianfName"].value,
+			guardianlName: e.target.elements["guardianlName"].value,
+			guardianEmail: e.target.elements["guardianEmail"].value,
+			guardianPhone: e.target.elements["guardianPhone"].value,
+		};
+		console.log(formFieldsIsMinorTemp);
 		if (isMinor) {
-			formFieldsIsMinorTemp = {
-				guardianfName: e.target.elements["guardianfName"].value,
-				guardianlName: e.target.elements["guardianlName"].value,
-				guardianEmail: e.target.elements["guardianEmail"].value,
-				guardianPhone: e.target.elements["guardianPhone"].value,
-			};
 		}
 
 		if (isMinor) {
@@ -234,7 +228,7 @@ function Form() {
 			});
 		}
 		formFields.forEach((field) => {
-			formSecret = secretCheck(formFieldsTemp[`${field.id}`]);
+			secretCheck(formFieldsTemp[`${field.id}`]);
 			if (!field.check(formFieldsTemp[`${field.id}`])) {
 				errorsTemp[field.id] = field.errorMsg;
 				// console.log(errorsTemp[`${field.id}`]);
@@ -251,6 +245,8 @@ function Form() {
 			setErrors(errorsTemp);
 			console.log("FAIL");
 		} else {
+			console.log(formSecret);
+
 			if (isMinor) {
 				const data = saveFormData(
 					formFieldsTemp,
@@ -262,11 +258,7 @@ function Form() {
 					state: { formData: data },
 				});
 			} else {
-				const data = saveFormData(
-					formFieldsTemp,
-					formFieldsIsMinorTemp,
-					formSecret
-				);
+				const data = saveFormData(formFieldsTemp);
 				saveDataFirebase(data);
 				navigate("/success", { state: { formData: data } });
 			}
@@ -276,6 +268,7 @@ function Form() {
 
 	// Define the function saveFormData
 	function saveFormData(formfields, formFieldsIsMinor) {
+		console.log(formSecret);
 		let formData = new FormData(
 			formfields.fName,
 			formfields.lName,
@@ -289,14 +282,14 @@ function Form() {
 			formfields.password,
 			formfields.sponsors,
 			formfields.consented,
-			secret
+			formSecret
 		);
-		if (formFieldsIsMinor !== undefined) {
+		if (isMinor) {
 			formData.setMinorFields(
-				formFieldsIsMinor.guardianfName.value,
-				formFieldsIsMinor.guardianlName.value,
-				formFieldsIsMinor.guardianEmail.value,
-				formFieldsIsMinor.guardianPhone.value
+				formFieldsIsMinor.guardianfName,
+				formFieldsIsMinor.guardianlName,
+				formFieldsIsMinor.guardianEmail,
+				formFieldsIsMinor.guardianPhone
 			);
 		}
 		return formData;
