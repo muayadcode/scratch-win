@@ -10,7 +10,7 @@ function FormSuccess() {
 	useEffect(() => {
 		if (formData == null) {
 			console.log("No form data");
-			navigate("/home");
+			navigate("/");
 		}
 	}, []);
 

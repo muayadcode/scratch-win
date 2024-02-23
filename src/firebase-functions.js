@@ -5,12 +5,14 @@ import {
 	query,
 	getDocs,
 	updateDoc,
+	deleteDoc,
 } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { db, auth } from "./firebase-config";
 
 export const checkLastPlayed = async (email) => {
 	try {
+		let lastPlayed;
 		const myQuery = query(
 			collection(db, "accounts"),
 			where("email", "==", email)
@@ -28,21 +30,33 @@ export const checkLastPlayed = async (email) => {
 	} catch (error) {
 		throw error;
 	}
-	return true;
+};
+
+export const getFirebaseData = async (email) => {
+	try {
+		const myQuery = query(
+			collection(db, "accounts"),
+			where("email", "==", email)
+		);
+		const querySnapshot = await getDocs(myQuery);
+		if (!querySnapshot.empty) {
+			const data = querySnapshot.docs[0].data();
+			saveDataLocal(data);
+			return data;
+		}
+	} catch (error) {
+		console.error("Error getting user data:", error.message);
+	}
 };
 
 export const saveDataFirebase = async (formData) => {
 	try {
-		// await checkLastPlayed(formData.email);
-
 		// Create user account with email and password
 		const userCredential = await createUserWithEmailAndPassword(
 			auth,
 			formData.email,
 			formData.password
 		);
-
-		console.log(formData);
 
 		if (formData.isMinor) {
 			await addDoc(collection(db, "accounts"), {
@@ -89,8 +103,9 @@ export const saveDataFirebase = async (formData) => {
 	}
 };
 
-export const saveLastPlayed = async (email) => {
-	console.log(email);
+export const saveLastPlayed = async () => {
+	const email = getLocalData().email;
+	const lastPlayed = new Date().toISOString();
 	try {
 		const myQuery = query(
 			collection(db, "accounts"),
@@ -100,7 +115,7 @@ export const saveLastPlayed = async (email) => {
 		if (!querySnapshot.empty) {
 			const doc = querySnapshot.docs[0];
 			await updateDoc(doc.ref, {
-				lastPlayed: new Date().toISOString(),
+				lastPlayed: lastPlayed,
 			});
 		}
 	} catch (error) {
@@ -108,11 +123,14 @@ export const saveLastPlayed = async (email) => {
 	}
 };
 
-const saveDataLocal = (formData) => {
+const saveDataLocal = (formData, lastPlayed) => {
 	let local = {
 		fName: formData.fName,
 		email: formData.email,
 	};
+	console.log("local");
+	lastPlayed ?? (local.lastPlayed = lastPlayed);
+
 	localStorage.setItem("formData", JSON.stringify(local));
 };
 
@@ -129,27 +147,30 @@ class Prize {
 		this.numOfPrizes = numOfPrizes;
 	}
 }
-const getAvailablePrizes = async () => {
+export const getAvailablePrizes = async () => {
 	const prizes = [];
+	const prizePool = [];
+
 	const querySnapshot = await getDocs(collection(db, "prizes"));
 	querySnapshot.forEach((doc) => {
 		const data = doc.data();
 		const prize = new Prize(data.value, data.numOfPrizes);
+
 		prizes.push(prize);
 	});
-	return prizes;
+	prizes.forEach((prize) => {
+		for (let i = 0; i < prize.numOfPrizes; i++) {
+			prizePool.push(prize);
+		}
+	});
+
+	return prizePool;
 };
 
 export const getPrize = async () => {
 	try {
-		const prizes = await getAvailablePrizes();
-		console.log(prizes);
-		const prizePool = [];
-		prizes.forEach((prize) => {
-			for (let i = 0; i < prize.numOfPrizes; i++) {
-				prizePool.push(prize);
-			}
-		});
+		const prizePool = await getAvailablePrizes();
+
 		const prize = prizePool[Math.floor(Math.random() * prizePool.length)];
 		return prize;
 	} catch (error) {
@@ -160,12 +181,53 @@ export const getPrize = async () => {
 export const removePrize = async (prize) => {
 	try {
 		const querySnapshot = await getDocs(
-			query(collection(db, "prizes"), where("value", "==", prize))
+			query(collection(db, "prizes"), where("value", "==", prize.value))
 		);
 		const doc = querySnapshot.docs[0];
-		await doc.ref.delete();
+		if (prize.numOfPrizes == 1) {
+			await deleteDoc(doc.ref);
+		} else {
+			await updateDoc(doc.ref, {
+				numOfPrizes: doc.data().numOfPrizes - 1,
+			});
+		}
 		console.log("Prize removed successfully!");
+		addPrizeToUser(prize, getLocalData().email);
 	} catch (error) {
 		console.error("Error removing prize:", error.message);
+	}
+};
+
+const addPrizeToUser = async (prize, email) => {
+	try {
+		let prizesWon = [];
+		const myQuery = query(
+			collection(db, "accounts"),
+			where("email", "==", email)
+		);
+		const querySnapshot = await getDocs(myQuery);
+		if (!querySnapshot.empty) {
+			const doc = querySnapshot.docs[0];
+			const data = doc.data();
+			if (data.prizesWon) {
+				prizesWon = data.prizesWon;
+			}
+			prizesWon.push(prize.value);
+			await updateDoc(doc.ref, {
+				prizesWon: prizesWon,
+			});
+		}
+	} catch (error) {
+		console.error("Error adding prize to user:", error.message);
+	}
+};
+
+export const signOut = async () => {
+	try {
+		await auth.signOut();
+		console.log("User signed out successfully!");
+		localStorage.removeItem("formData");
+	} catch (error) {
+		console.error("Error signing out:", error.message);
 	}
 };

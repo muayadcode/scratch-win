@@ -15,6 +15,7 @@ import {
 	getLocalData,
 	getPrize,
 	saveLastPlayed,
+	getAvailablePrizes,
 } from "../firebase-functions";
 
 const Contest = ({}) => {
@@ -30,52 +31,60 @@ const Contest = ({}) => {
 		// Load form data from local storage if available
 
 		if (localData !== null) {
-			const lastPlayed = checkLastPlayed(localData.email);
-			if (lastPlayed < 72) {
-				setCanPlay(false);
-			} else {
-				setCanPlay(true);
-			}
+			checkLastPlayed(localData.email).then((lastPlayed) => {
+				console.log(lastPlayed);
+				if (lastPlayed < 72) {
+					setCanPlay(false);
+				} else {
+					setCanPlay(true);
+				}
+			});
 		} else {
 			navigate("/home");
 		}
+		const numOfPeople = 69420;
+		getAvailablePrizes().then((prizes) => {
+			const numOfPrizes = prizes.length;
+			const winChance = numOfPrizes / numOfPeople;
+			// console.log(winChance);
+			setWin(Math.random() < winChance ? true : false);
+		});
 
-		setWin(willWin());
-		if (win) {
-			setPrize(getPrize());
-		}
+		getPrize().then((prize) => {
+			setPrize(prize);
+		});
 	}, []);
 
 	useEffect(() => {
-		saveLastPlayed(localData.email);
+		if (finished) {
+			saveLastPlayed(localData.email);
+		}
 	}, [finished]);
-
-	function willWin() {
-		let numOfPeople = 69420;
-		let winChance = 116 / numOfPeople;
-		return Math.random() < winChance ? true : false;
-	}
 
 	if (!canPlay) {
 		//maybe add in how many hours
 		return (
 			<main className='contest'>
-				<section className='innerCard'>
-					<h2>Sorry, you've already played within the last 72 hours :sadFace:</h2>
+				<section className='innerCard flexCol gap1 flexCenter'>
+					<h2>Sorry, you've already played within the last 72 hours :sadface:</h2>
+					<Link to='/'>
+						<button className='blueButton'>Back to Home </button>
+					</Link>
 				</section>
 			</main>
 		);
 	}
 	return (
 		<>
-			{finished ? (
-				win ? (
+			{finished == true ? (
+				win == true ? (
 					<Win prize={prize} />
 				) : (
 					<Lose />
 				)
 			) : (
 				<main className='contest'>
+					<h1 className='textCenter'>Good Luck {localData.fName}!</h1>
 					<ScratchCard setFinished={setFinished} isWin={win} />
 
 					<section className='innerCard'>
@@ -115,17 +124,11 @@ const ScratchCard = ({ setFinished, isWin }) => {
 	useEffect(() => {
 		const container = document.getElementById("scratchCard");
 		const canvas = document.getElementById("scratch");
-		console.log(canvas);
 		const context = canvas.getContext("2d", { willReadFrequently: true });
 		let scratchPercent = 0;
 		const pixels = () => {
 			return context.getImageData(0, 0, canvas.width, canvas.height);
 		};
-
-		console.log(container.offsetHeight);
-		// const canvasWidth = container.offsetWidth / 1.52;
-		// const canvasHeight = container.offsetHeight / 2.3;
-		// console.log(canvasHeight);
 
 		const init = () => {
 			// context.scale(container.offsetWidth / 1.52, container.offsetHeight / 2.3);
@@ -135,41 +138,10 @@ const ScratchCard = ({ setFinished, isWin }) => {
 			context.fillRect(0, 0, canvas.width, canvas.height);
 		};
 
-		const draw = () => {
-			let oldPixels = pixels();
-			let canvasWidthOld = canvas.width;
-			let canvasHeightOld = canvas.height;
-			canvas.width = container.offsetWidth / 1.52;
-			canvas.height = container.offsetHeight / 2.32;
-			console.log(canvas.width, oldPixels.width);
-			// context.fillStyle = "#F3CE4F";
-			context.scale(
-				canvas.width / oldPixels.width,
-				canvas.height / oldPixels.height
-			);
-			context.putImageData(oldPixels, 0, 0);
-			// if (canvasWidthOld < canvas.width) {
-			// 	context.fillRect(
-			// 		canvasWidthOld,
-			// 		0,
-			// 		canvas.width - canvasWidthOld,
-			// 		canvas.height
-			// 	);
-			// }
-			// if (canvasHeightOld < canvas.height) {
-			// 	context.fillRect(
-			// 		0,
-			// 		canvasHeightOld,
-			// 		canvas.width,
-			// 		canvas.height - canvasHeightOld
-			// 	);
-			// }
-		};
-
 		let mouse = {
 			x: null,
 			y: null,
-			radius: 10,
+			radius: 20,
 		};
 
 		let isDragged = false;
@@ -179,8 +151,6 @@ const ScratchCard = ({ setFinished, isWin }) => {
 			context.beginPath();
 			context.arc(mouse.x, mouse.y, mouse.radius, 0, 2 * Math.PI);
 			context.fill();
-			// scratchedPixels = context.getImageData(0, 0, canvas.width, canvas.height);
-			// console.log(scratchedPixels.data);
 		};
 
 		const handleStart = (event) => {
@@ -208,25 +178,11 @@ const ScratchCard = ({ setFinished, isWin }) => {
 			// console.log(getScratchPercent());
 		};
 
-		let rectLeft = canvas.getBoundingClientRect().left;
-		let rectTop = canvas.getBoundingClientRect().top;
-
 		const getXY = (e) => {
-			// let offsetX = 0;
-			// let offsetY = 0;
-			// if (canvas.offsetParent !== undefined) {
-			// 	do {
-			// 		offsetX += canvas.offsetLeft;
-			// 		offsetY += canvas.offsetTop;
-			// 	} while (canvas == canvas.offsetParent);
-			// }
-
 			mouse.x =
 				(!deviceType.touch ? e.pageX : e.touches[0].x) - container.offsetLeft - 60;
 			mouse.y =
 				(!deviceType.touch ? e.pageY : e.touches[0].y) - canvas.offsetTop - 20;
-			// console.log(mouse.x, mouse.y);
-			// console.log(rectLeft, rectTo/p);
 		};
 
 		function getScratchPercent() {
@@ -261,10 +217,6 @@ const ScratchCard = ({ setFinished, isWin }) => {
 		};
 
 		setDeviceType({ touch: isTouchDevice() });
-
-		window.addEventListener("resize", function (event) {
-			// draw();
-		});
 
 		init();
 	}, []);

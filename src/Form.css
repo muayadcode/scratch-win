@@ -111,6 +111,10 @@ input[type="checkbox"]:focus {
 	margin-bottom: 0.5rem;
 }
 
+.checkBoxes .error {
+	grid-column: span 2;
+}
+
 .checkBoxes div label {
 	font-size: 1.25rem;
 }

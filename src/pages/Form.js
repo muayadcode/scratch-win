@@ -123,14 +123,14 @@ function Form() {
 		new FormField("Phone", "*Invalid Phone ", phoneReg, "phone"),
 		new FormField(
 			"Email",
-			"Please provide a valid email address.",
+			"*Please provide a valid email address.",
 			emailReg,
 			"email"
 		),
 		new FormField("Date", "*Invalid Date", hasDate, "date"),
 		new FormField(
 			"Password",
-			"Must contain at least one number, upper and lower case letter, and at least 6 characters.",
+			"*Must contain at least one number, upper and lower case letter, a special character, and be at least 6 characters.",
 			passwordCheck,
 			"password"
 		),
@@ -489,7 +489,7 @@ function Form() {
 								{errors.consented}
 							</p>
 						</div>
-						<p className='error' id='checkboxError'></p>
+
 						<div className=' checkBox'>
 							<input type='checkbox' id='sponsors' />
 							<label htmlFor='sponsors'>

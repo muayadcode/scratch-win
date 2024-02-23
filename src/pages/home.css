@@ -20,7 +20,7 @@ header {
 	order: 3;
 }
 
-.sponsor p {
+.sponsor span p {
 	font-size: 1rem;
 	font-weight: 300;
 	line-height: 1.5rem;
@@ -36,12 +36,19 @@ header a {
 }
 
 .hero {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	min-height: 300px;
-	background-color: #badc58;
+	position: relative;
+}
+
+.hero img {
+	width: 100%;
+	object-fit: cover;
+	min-height: 200px;
+}
+
+.hero button {
+	position: absolute;
+	top: 50%;
+	left: 10%;
 }
 
 header span {
@@ -70,6 +77,15 @@ header img {
 	align-items: center;
 }
 
+.sponsor span {
+	padding: 1rem 0;
+	gap: 1rem;
+}
+
+.sponsor img {
+	border: 2px solid #282e65;
+}
+
 .home h1 {
 	font-size: 3rem;
 	font-weight: 600;
@@ -87,6 +103,9 @@ header img {
 
 .home p {
 	align-self: flex-start;
+	line-height: 30px;
+	font-weight: 200;
+	font-size: 21px;
 }
 
 footer {

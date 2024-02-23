@@ -1,75 +1,96 @@
 .flexWrapCenter {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
 }
 
 .flexCol {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .gap1 {
-    gap: 1rem;
+	gap: 1rem;
 }
 
 .child55 {
-    flex: 1 100%;
-}
-
-.child30 {
-    flex: 1 32%;
+	flex: 1 100%;
 }
 
 .child40 {
-    flex: 1 38%;
+	flex: 1 38%;
+}
+
+.child30 {
+	flex: 1 29%;
 }
 
 .child60 {
-    flex: 1 59%;
+	flex: 1 59%;
 }
 
 .child100 {
-    flex: 1 100%;
+	flex: 1 100%;
 }
 
 .child50 {
-    flex: 1 48%;
+	flex: 1 48%;
 }
 
 .disabled {
-    pointer-events: none;
-    opacity: 0.6;
+	pointer-events: none;
+	opacity: 0.6;
 }
 
 .displayNone {
-    display: none;
+	display: none;
+}
+
+.flex {
+	display: flex;
 }
 
 .displayBlock {
-    display: block;
+	display: block;
 }
 
 .text22 {
-    font-size: 22px;
+	font-size: 22px;
 }
 
 .text20 {
-    font-size: 20px;
+	font-size: 20px;
 }
 
 .text24 {
-    font-size: 24px;
+	font-size: 24px;
 }
 
 .semiBold {
-    font-weight: 600;
+	font-weight: 600;
 }
 
 .light {
-    font-weight: 300;
+	font-weight: 300;
 }
 
 .extraLight {
-    font-weight: 100;
+	font-weight: 100;
+}
+
+.textLeft {
+	text-align: left;
+}
+
+.gap1 {
+	gap: 1rem;
+}
+
+.textCenter {
+	text-align: center;
+}
+
+.flexCenter {
+	justify-content: center;
+	align-items: center;
 }

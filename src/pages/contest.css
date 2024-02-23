@@ -1,5 +1,6 @@
 .contest {
 	padding: 2rem;
+	min-width: 540px;
 }
 
 .contest .innerCard h2 {
@@ -22,6 +23,7 @@
 	height: auto;
 	display: flex;
 	justify-content: center;
+	margin-bottom: 2rem;
 }
 
 #scratchCard {
@@ -60,6 +62,10 @@
 	position: absolute;
 	cursor: grabbing;
 	border-radius: 0.5rem;
+}
+
+.contest button {
+	width: auto;
 }
 
 .base {
