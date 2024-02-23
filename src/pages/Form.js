@@ -3,7 +3,7 @@ import "../Form.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { saveDataFirebase } from "../firebase-functions";
+import { saveDataFirebase, doesEmailExist } from "../firebase-functions";
 
 function Form() {
 	class FormData {
@@ -241,29 +241,34 @@ function Form() {
 			errorsFound += 1;
 		}
 
-		if (errorsFound > 0) {
-			setErrors(errorsTemp);
-			console.log("FAIL");
-		} else {
-			console.log(formSecret);
-
-			if (isMinor) {
-				const data = saveFormData(
-					formFieldsTemp,
-					formFieldsIsMinorTemp,
-					formSecret
-				);
-				saveDataFirebase(data);
-				navigate("/success", {
-					state: { formData: data },
-				});
-			} else {
-				const data = saveFormData(formFieldsTemp);
-				saveDataFirebase(data);
-				navigate("/success", { state: { formData: data } });
-			}
-			console.log("PASS");
-		}
+		doesEmailExist(formFieldsTemp.email)
+			.then((result) => {
+				if (result) {
+					errorsTemp.email = "*Email already exists.";
+					errorsFound += 1;
+				}
+			})
+			.then(() => {
+				if (errorsFound > 0) {
+					setErrors(errorsTemp);
+				} else {
+					if (isMinor) {
+						const data = saveFormData(
+							formFieldsTemp,
+							formFieldsIsMinorTemp,
+							formSecret
+						);
+						saveDataFirebase(data);
+						navigate("/success", {
+							state: { formData: data },
+						});
+					} else {
+						const data = saveFormData(formFieldsTemp);
+						saveDataFirebase(data);
+						navigate("/success", { state: { formData: data } });
+					}
+				}
+			});
 	};
 
 	// Define the function saveFormData
