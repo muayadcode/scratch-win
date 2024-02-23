@@ -1,173 +1,174 @@
 #rulesBox {
-    height: 160px;
-    width: 100%;
-    overflow: auto;
-    border: 1px solid #000;
-    background-color: #eefef1;
-    border-radius: 5px;
-    padding: 25px;
+	height: 160px;
+	width: 100%;
+	overflow: auto;
+	border: 1px solid #000;
+	background-color: #eefef1;
+	border-radius: 5px;
+	padding: 25px;
 }
 
 /* Custom scrollbar */
 #rulesBox::-webkit-scrollbar {
-    width: 0.75rem;
+	width: 0.75rem;
 }
 
-
 #rulesBox::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 5px;
+	background-color: #888;
+	border-radius: 5px;
 }
 
 #rulesBox::-webkit-scrollbar-thumb:hover {
-    background: #555;
+	background: #555;
 }
 
 label {
-    font-size: 1.5rem;
+	font-size: 1.5rem;
 }
 
 input {
-    border-radius: 5px;
-    background-color: #eefef1;
-    border: 2px solid #eefef1;
-    padding: 0.75rem;
-    font-size: 22px;
-    font-weight: 400;
-    width: 100%;
-    margin: 0.313rem 0;
-    font-size: 1.125rem;
+	border-radius: 5px;
+	background-color: #eefef1;
+	border: 2px solid #eefef1;
+	padding: 0.75rem;
+	font-size: 22px;
+	font-weight: 400;
+	width: 100%;
+	margin: 0.313rem 0;
+	font-size: 1.125rem;
 }
 
 input:focus {
-    outline: none;
-    border: 2px solid #4f7340;
+	outline: none;
+	border: 2px solid #4f7340;
 }
-
 
 .formStyle {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    text-align: left;
-    border: none;
-    margin-bottom: 40px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	text-align: left;
+	border: none;
+	margin-bottom: 40px;
 }
 
-input[type='checkbox'] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    font: inherit;
-    color: currentColor;
-    appearance: none;
+input[type="checkbox"] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	font: inherit;
+	color: currentColor;
+	appearance: none;
 
-    cursor: pointer;
-    display: grid;
-    place-content: center;
-    width: 1.15em;
-    height: 1.15em;
-    border: 2px solid #4f7340;
-    border-radius: 5px;
+	cursor: pointer;
+	display: grid;
+	place-content: center;
+	width: 1.15em;
+	height: 1.15em;
+	border: 2px solid #4f7340;
+	border-radius: 5px;
 }
 
 /* https://moderncss.dev/pure-css-custom-checkbox-style/ */
 input[type="checkbox"]::before {
-    content: "";
-    width: 0.8em;
-    height: 0.8em;
-    -webkit-clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
-    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
-    transform: scale(0);
-    transform-origin: bottom left;
-    transition: 120ms transform ease-in-out;
-    box-shadow: inset 1em 1em #282e65;
-    /* Windows High Contrast Mode */
-    background-color: CanvasText;
+	content: "";
+	width: 0.8em;
+	height: 0.8em;
+	-webkit-clip-path: polygon(
+		14% 44%,
+		0 65%,
+		50% 100%,
+		100% 16%,
+		80% 0%,
+		43% 62%
+	);
+	clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+	transform: scale(0);
+	transform-origin: bottom left;
+	transition: 120ms transform ease-in-out;
+	box-shadow: inset 1em 1em #282e65;
+	/* Windows High Contrast Mode */
+	background-color: CanvasText;
 }
 
 input[type="checkbox"]:checked::before {
-    transform: scale(1);
+	transform: scale(1);
 }
 
 input[type="checkbox"]:focus {
-    outline: max(2px, 0.15em) solid currentColor;
-    outline-offset: max(2px, 0.15em);
+	outline: max(2px, 0.15em) solid currentColor;
+	outline-offset: max(2px, 0.15em);
 }
 
 .checkBoxes {
-    padding: 2rem;
+	padding: 2rem;
 }
 
 .checkBoxes div {
-    display: grid;
-    grid-template-columns: 1em auto;
-    gap: 0.5em;
-    align-items: center;
-    margin-bottom: 0.5rem;
+	display: grid;
+	grid-template-columns: 1em auto;
+	gap: 0.5em;
+	align-items: center;
+	margin-bottom: 0.5rem;
 }
 
 .checkBoxes div label {
-    font-size: 1.25rem;
+	font-size: 1.25rem;
 }
 
-
-#passwordError {
-    height: 48px;
+.h48 {
+	height: 48px !important;
 }
 
 .error {
-    height: 24px;
-    font-size: 1rem;
-    color: #fc1616;
-    font-style: italic;
+	height: 24px;
+	font-size: 1rem;
+	color: #fc1616;
+	font-style: italic;
 }
 
 input::placeholder {
-    font-size: 1.25rem;
-    color: #aebeb1;
-    font-weight: 100;
+	font-size: 1.25rem;
+	color: #aebeb1;
+	font-weight: 100;
 }
 
 #rulesBox h3 {
-    font-weight: 500;
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
+	font-weight: 500;
+	font-size: 1.25rem;
+	margin-bottom: 0.5rem;
 }
 
 #rulesBox p {
-    font-weight: 300;
-    font-size: 0.906rem;
-    margin-bottom: 0.75rem;
+	font-weight: 300;
+	font-size: 0.906rem;
+	margin-bottom: 0.75rem;
 }
 
-
 .logo {
-    display: inline-block;
-    max-width: 15%;
+	display: inline-block;
+	max-width: 15%;
 }
 
 .formStyle p,
 label {
-    margin-left: 10px;
+	margin-left: 10px;
 }
 
-
-
 h3 {
-    font-size: 1.375rem;
-    font-weight: 400;
+	font-size: 1.375rem;
+	font-weight: 400;
 }
 
 .innerCard {
-    background-color: #eefef1;
-    border-radius: 5px;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.18);
-    padding: 2rem;
+	background-color: #eefef1;
+	border-radius: 5px;
+	box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.18);
+	padding: 2rem;
 }
 
-.innerCard span {
-    margin: 10px 20px;
-    font-size: 18px;
-    padding: 10px;
-    flex-wrap: wrap;
+.innerCard p {
+	margin: 10px 20px;
+	font-size: 18px;
+	padding: 10px;
+	text-align: left;
 }

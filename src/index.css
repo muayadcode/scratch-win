@@ -1,9 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Francois+One&family=Poppins&display=swap");
+
 * {
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
 	font-family: "Poppins", sans-serif;
 	font-weight: 400;
+	color: #212121;
+}
+
+a {
+	text-decoration: none;
 }
 
 body {
@@ -21,7 +28,7 @@ p {
 
 .cardStyle {
 	border-radius: 25px;
-	background-color: #badc58;
+
 	text-align: center;
 	margin-top: 50px;
 	padding: 50px;
@@ -29,6 +36,14 @@ p {
 	margin: 1rem;
 	max-width: 800px;
 	align-items: center;
+}
+
+.greenCard {
+	background-color: #badc58;
+}
+
+.yellowCard {
+	background-color: #f6d253;
 }
 
 .blueButton {
@@ -44,6 +59,10 @@ p {
 	cursor: pointer;
 }
 
+a:hover {
+	text-decoration: underline;
+}
+
 .blueButton a {
 	text-decoration: none;
 	color: #eefef1;
@@ -53,15 +72,22 @@ p {
 	background-color: #0074a9;
 }
 
+.blueButton a:hover,
+.greenButton a:hover {
+	text-decoration: none;
+}
+
 .greenButton {
 	background-color: #badc58;
-	width: 200px;
-	border-radius: 1rem;
+	width: 220px;
+	border-radius: 2rem;
 	font-size: 2.5rem;
 	padding: 10px;
 	margin: 0 auto;
+	font-family: "Francois One", sans-serif;
 	cursor: pointer;
 	color: black;
+
 	border: 1px solid #082d15;
 }
 
@@ -70,7 +96,7 @@ p {
 }
 
 strong {
-	font-weight: bold;
+	font-weight: 700;
 }
 
 .line {
@@ -102,4 +128,10 @@ h2 {
 	left: 10%;
 	right: 10%;
 	padding: 1rem;
+}
+
+.lightLine {
+	height: 2px;
+	width: 100%;
+	background-color: #f3de96;
 }

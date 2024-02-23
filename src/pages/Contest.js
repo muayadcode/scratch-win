@@ -7,70 +7,115 @@ import winCard3 from "../images/winningCard3.png";
 import loseCard2 from "../images/losingCard2.png";
 import loseCard3 from "../images/losingCard3.png";
 
-const Contest = () => {
-	let prizes = [
-		{ value: "10000", numOfPrizes: 1 },
-		{ value: "750", numOfPrizes: 5 },
-		{ value: "100", numOfPrizes: 10 },
-		{ value: "20", numOfPrizes: 100 },
-	];
-	let prizePool = [];
-	prizes.forEach((prize) => {
-		for (let i = 0; i < prize.numOfPrizes; i++) {
-			prizePool.push(prize);
+import Win from "./Win";
+import Lose from "./Loss";
+
+import {
+	checkLastPlayed,
+	getLocalData,
+	getPrize,
+	saveLastPlayed,
+} from "../firebase-functions";
+
+const Contest = ({}) => {
+	const [canPlay, setCanPlay] = useState();
+	const [win, setWin] = useState(false);
+	const [prize, setPrize] = useState();
+	const localData = getLocalData();
+	const navigate = useNavigate();
+
+	const [finished, setFinished] = useState(false);
+
+	useEffect(() => {
+		// Load form data from local storage if available
+
+		if (localData !== null) {
+			const lastPlayed = checkLastPlayed(localData.email);
+			if (lastPlayed < 72) {
+				setCanPlay(false);
+			} else {
+				setCanPlay(true);
+			}
+		} else {
+			navigate("/home");
 		}
-	});
-	let numOfPrizes = prizePool.length;
+
+		setWin(willWin());
+		if (win) {
+			setPrize(getPrize());
+		}
+	}, []);
+
+	useEffect(() => {
+		saveLastPlayed(localData.email);
+	}, [finished]);
 
 	function willWin() {
 		let numOfPeople = 69420;
-		let winChance = numOfPrizes / numOfPeople;
+		let winChance = 116 / numOfPeople;
 		return Math.random() < winChance ? true : false;
 	}
 
-	function whichPrize() {
-		let prize = prizePool[Math.floor(Math.random() * numOfPrizes)];
-		return prize.value;
+	if (!canPlay) {
+		//maybe add in how many hours
+		return (
+			<main className='contest'>
+				<section className='innerCard'>
+					<h2>Sorry, you've already played within the last 72 hours :sadFace:</h2>
+				</section>
+			</main>
+		);
 	}
-	let win = willWin();
-	let prize = whichPrize();
-	console.log(prize);
 	return (
-		<main className='contest'>
-			<ScratchCard willWin={win} whichPrize={prize} />
-			<section className='innerCard'>
-				<h2>Instructions</h2>
-				<p>
-					Use your mouse or touchscreen to scratch off the card and uncover prizes
-					ranging from BuyMore Dollars to exciting rewards.{" "}
-				</p>
-				<p>
-					Winners will be selected through a random draw, adding an element of
-					anticipation to each play. If you're fortunate enough to win, be prepared
-					to answer a skill-testing question to claim your prize.{" "}
-				</p>
-				<p>
-					Please note that the leadership team of BuyMore Dollars Inc. reserves the
-					right to remove entries for any reason, ensuring fairness throughout the
-					contest.{" "}
-				</p>
-				<Link to='/legal' state={"/contest"}>
-					Terms and Conditions
-				</Link>
-			</section>
-		</main>
+		<>
+			{finished ? (
+				win ? (
+					<Win prize={prize} />
+				) : (
+					<Lose />
+				)
+			) : (
+				<main className='contest'>
+					<ScratchCard setFinished={setFinished} isWin={win} />
+
+					<section className='innerCard'>
+						<h2>Instructions</h2>
+						<p>
+							Use your mouse or touchscreen to scratch off the card and uncover prizes
+							ranging from BuyMore Dollars to exciting rewards.{" "}
+						</p>
+						<p>
+							Winners will be selected through a random draw, adding an element of
+							anticipation to each play. If you're fortunate enough to win, be prepared
+							to answer a skill-testing question to claim your prize.{" "}
+						</p>
+						<p>
+							Please note that the leadership team of BuyMore Dollars Inc. reserves the
+							right to remove entries for any reason, ensuring fairness throughout the
+							contest.{" "}
+						</p>
+						<Link to='/legal' state={"/contest"}>
+							Terms and Conditions
+						</Link>
+					</section>
+				</main>
+			)}
+		</>
 	);
 };
 
-const ScratchCard = ({ isWin, whichPrize }) => {
+const ScratchCard = ({ setFinished, isWin }) => {
 	const [deviceType, setDeviceType] = useState({ touch: false });
 	const winCards = [winCard1, winCard2, winCard3];
 	const loseCards = [loseCard2, loseCard3];
-	const navigate = useNavigate();
+	let card = isWin
+		? winCards[Math.floor(Math.random() * winCards.length)]
+		: loseCards[Math.floor(Math.random() * loseCards.length)];
 
 	useEffect(() => {
 		const container = document.getElementById("scratchCard");
 		const canvas = document.getElementById("scratch");
+		console.log(canvas);
 		const context = canvas.getContext("2d", { willReadFrequently: true });
 		let scratchPercent = 0;
 		const pixels = () => {
@@ -78,16 +123,16 @@ const ScratchCard = ({ isWin, whichPrize }) => {
 		};
 
 		console.log(container.offsetHeight);
-		const canvasWidth = container.offsetWidth / 1.52;
-		const canvasHeight = container.offsetHeight / 2.3;
-		console.log(canvasHeight);
+		// const canvasWidth = container.offsetWidth / 1.52;
+		// const canvasHeight = container.offsetHeight / 2.3;
+		// console.log(canvasHeight);
 
 		const init = () => {
 			// context.scale(container.offsetWidth / 1.52, container.offsetHeight / 2.3);
-			canvas.width = canvasWidth;
-			canvas.height = canvasHeight;
+			canvas.width = 300;
+			canvas.height = 300;
 			context.fillStyle = "#F3CE4F";
-			context.fillRect(0, 0, canvasWidth, canvasHeight);
+			context.fillRect(0, 0, canvas.width, canvas.height);
 		};
 
 		const draw = () => {
@@ -158,11 +203,7 @@ const ScratchCard = ({ isWin, whichPrize }) => {
 			isDragged = false;
 			scratchPercent = getScratchPercent();
 			if (scratchPercent > 50) {
-				if (isWin) {
-					navigate("/win", { state: { prize: whichPrize } });
-				} else {
-					navigate("/lose");
-				}
+				setFinished(true);
 			}
 			// console.log(getScratchPercent());
 		};
@@ -171,11 +212,21 @@ const ScratchCard = ({ isWin, whichPrize }) => {
 		let rectTop = canvas.getBoundingClientRect().top;
 
 		const getXY = (e) => {
-			console.log(e.x, e.y);
-			mouse.x = (!deviceType.touch ? e.x : e.touches[0].x) - rectLeft;
-			mouse.y = (!deviceType.touch ? e.y : e.touches[0].y) - rectTop;
-			console.log(mouse.x, mouse.y);
-			console.log(rectLeft, rectTop);
+			// let offsetX = 0;
+			// let offsetY = 0;
+			// if (canvas.offsetParent !== undefined) {
+			// 	do {
+			// 		offsetX += canvas.offsetLeft;
+			// 		offsetY += canvas.offsetTop;
+			// 	} while (canvas == canvas.offsetParent);
+			// }
+
+			mouse.x =
+				(!deviceType.touch ? e.pageX : e.touches[0].x) - container.offsetLeft - 60;
+			mouse.y =
+				(!deviceType.touch ? e.pageY : e.touches[0].y) - canvas.offsetTop - 20;
+			// console.log(mouse.x, mouse.y);
+			// console.log(rectLeft, rectTo/p);
 		};
 
 		function getScratchPercent() {
@@ -212,15 +263,11 @@ const ScratchCard = ({ isWin, whichPrize }) => {
 		setDeviceType({ touch: isTouchDevice() });
 
 		window.addEventListener("resize", function (event) {
-			draw();
+			// draw();
 		});
 
 		init();
 	}, []);
-
-	let card = isWin
-		? winCards[Math.floor(Math.random() * winCards.length)]
-		: loseCards[Math.floor(Math.random() * loseCards.length)];
 
 	return (
 		<section id='scratchContainer'>
@@ -228,7 +275,7 @@ const ScratchCard = ({ isWin, whichPrize }) => {
 				<div className='base'>
 					<img src={card} alt='scratch card' />
 				</div>
-				<canvas id='scratch'></canvas>
+				<canvas id='scratch' width={300} height={300}></canvas>
 			</div>
 		</section>
 	);

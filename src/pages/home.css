@@ -1,0 +1,102 @@
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 10px;
+	background-color: #282e65;
+	color: #eefef1;
+}
+
+.sponsor {
+	background-color: #f3ebcf;
+	padding: 1rem;
+	border-radius: 10px;
+}
+.sponsor h3 {
+	font-size: 2rem;
+}
+
+.flip {
+	order: 3;
+}
+
+.sponsor p {
+	font-size: 1rem;
+	font-weight: 300;
+	line-height: 1.5rem;
+}
+
+.sponsor img {
+	width: 100px;
+	border-radius: 10px;
+}
+
+header a {
+	color: #eefef1;
+}
+
+.hero {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	min-height: 300px;
+	background-color: #badc58;
+}
+
+header span {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+}
+
+header p {
+	font-family: "Francois One", sans-serif;
+	font-size: 2rem;
+	color: #eefef1;
+}
+
+header img {
+	width: 50px;
+}
+
+.home {
+	max-width: 800px;
+	padding: 2rem;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	align-items: center;
+}
+
+.home h1 {
+	font-size: 3rem;
+	font-weight: 600;
+	color: #282e65;
+	text-align: center;
+}
+
+.home h2 {
+	font-size: 2rem;
+	font-weight: 300;
+	font-style: italic;
+	color: #282e65;
+	text-align: center;
+}
+
+.home p {
+	align-self: flex-start;
+}
+
+footer {
+	background-color: #282e65;
+
+	padding: 1rem;
+}
+
+footer p,
+footer a {
+	font-size: 1rem;
+	color: #eefef1;
+}
