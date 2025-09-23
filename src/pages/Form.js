@@ -516,6 +516,9 @@ function Form() {
 					Submit
 				</button>
 			</form>
+			<Link to="/">
+			<button className="blueButton1"> Home</button>
+			</Link>
 		</main>
 	);
 }
