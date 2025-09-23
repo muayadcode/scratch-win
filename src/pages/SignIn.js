@@ -1,8 +1,8 @@
-import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-config";
 import { getFirebaseData } from "../firebase-functions";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function SignIn() {
 	const navigate = useNavigate();
@@ -41,7 +41,11 @@ function SignIn() {
 				<button type='submit' className='blueButton'>
 					Login
 				</button>
+				
 			</form>
+			<Link to="/">
+			<button className="blueButton1">Home</button>
+			</Link>
 		</main>
 	);
 }
