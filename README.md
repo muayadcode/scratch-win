@@ -1,59 +1,70 @@
-# 💵 Buy More Dollars – Scratch & Win Game
+# Getting Started with Create React App
 
-**Buy More Dollars** is a Scratch & Win web game built as a **group project**, where I served as the **lead developer**.  
-The app delivers an engaging, interactive scratch-card experience, combining secure authentication, smooth gameplay, and real-time prize tracking.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
----
+## Available Scripts
 
-## 📝 Project Description
+In the project directory, you can run:
 
-In this project, our team designed and launched an interactive “Scratch & Win” game called **Buy More Dollars**.  
-As the **developer of the group**, I was responsible for implementing core features, integrating advanced technologies, and optimizing the game for performance and usability.
+### `npm start`
 
-### 🎮 Features
-- **Scratch & Win gameplay:** Users scratch off surfaces with their mouse (or touch) to reveal hidden prizes or game elements.
-- **Secure authentication:** Integrated Firebase Authentication for sign up and login.
-- **Data management:** User information and prizes stored in Firebase Realtime Database/Firestore.
-- **Form validation:** Regex-based validation ensures clean and secure user input.
-- **Local storage integration:** Efficiently manages session data for faster, smoother user experience.
-- **Canvas-powered interactions:** Scratch effect built using HTML Canvas for fluid interactivity.
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
----
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-## 🛠️ Technologies Used
+### `npm test`
 
-| Technology        | Purpose                                                                 |
-|-------------------|-------------------------------------------------------------------------|
-| **React**         | Core framework for building the SPA and managing UI state.              |
-| **Firebase**      | Authentication, user data, and prize storage.                          |
-| **Regex**         | Form validation and data sanitization.                                  |
-| **Local Storage** | Session persistence and performance improvements.                      |
-| **HTML Canvas**   | Scratch-off interactivity and game rendering.                           |
-| **CSS/Custom UI** | Styling and responsive layout.                                          |
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
----
+### `npm run build`
 
-## 👤 My Role
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-- Built the **entire React front-end** from scratch.
-- Integrated **Firebase Authentication** and **Firebase Database**.
-- Implemented **Regex validation** for user input.
-- Managed **local storage** for session and prize tracking.
-- Created the **canvas scratch-off feature**.
-- Ensured **responsive design and cross-browser compatibility**.
-- Managed repository and codebase direction during group collaboration.
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+### `npm run eject`
 
----
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-### 💡 About This Project  
-This project demonstrates my ability to:
-- Build interactive, data-driven web apps in React.
-- Integrate Firebase Authentication and databases.
-- Implement advanced front-end features such as canvas graphics and Regex validation.
-- Collaborate in a team environment while leading development.
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-## 👥 Contributors
-- **Muayadcode** – Lead Developer (React, Firebase integration, authentication, canvas scratch-off)
-- **Kenningtonz** – Assisted with UI tweaks and feature enhancements
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
