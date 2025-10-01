@@ -58,3 +58,24 @@ This project demonstrates my ability to:
 - **Muayad Fandqle** – Lead Developer (React, Firebase integration, authentication, canvas scratch-off)
 - **Kenningtonz** – Assisted with UI tweaks and feature enhancements
 
+
+## 📦 Installation & Setup  
+
+Follow these steps to run the project locally: 
+
+  1. **Clone the repository**  
+   ```bash
+      git clone https://github.com/muayadcode/Recipe-Template.git
+    
+  2. **Navigate into the project folder**
+   ```bash
+      cd Recipe-Template
+   
+  4. **Install dependencies**
+   ```bash
+      npm install
+   
+  6. **Start the development server**
+   ```bash
+      npm start
+
