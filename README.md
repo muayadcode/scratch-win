@@ -55,6 +55,6 @@ This project demonstrates my ability to:
 - Collaborate in a team environment while leading development.
 
 ## 👥 Contributors
-- **Muayadcode** – Lead Developer (React, Firebase integration, authentication, canvas scratch-off)
+- **Muayad Fandqle** – Lead Developer (React, Firebase integration, authentication, canvas scratch-off)
 - **Kenningtonz** – Assisted with UI tweaks and feature enhancements
 
