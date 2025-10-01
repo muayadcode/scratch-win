@@ -61,21 +61,21 @@ This project demonstrates my ability to:
 
 ## 📦 Installation & Setup  
 
-Follow these steps to run the project locally: 
+Follow these steps to run the project locally:  
 
-  1. **Clone the repository**  
+1. **Clone the repository**  
    ```bash
-      git clone https://github.com/muayadcode/Recipe-Template.git
+     git clone https://github.com/muayadcode/scratch-win.git
     
-  2. **Navigate into the project folder**
+2. **Navigate into the project folder**
    ```bash
-      cd Recipe-Template
-   
-  4. **Install dependencies**
+    cd scratch-win
+
+4. **Install dependencies**
    ```bash
       npm install
    
-  6. **Start the development server**
+5. **Start the development server**
    ```bash
       npm start
 
