@@ -1,16 +1,16 @@
-# 💵 Buy More Dollars – Scratch & Win Game
+# Buy More Dollars – Scratch & Win Game
 
 **Buy More Dollars** is a Scratch & Win web game built as a **group project**, where I served as the **lead developer**.  
 The app delivers an engaging, interactive scratch-card experience, combining secure authentication, smooth gameplay, and real-time prize tracking.
 
 ---
 
-## 📝 Project Description
+## Project Description
 
 In this project, our team designed and launched an interactive “Scratch & Win” game called **Buy More Dollars**.  
 As the **developer of the group**, I was responsible for implementing core features, integrating advanced technologies, and optimizing the game for performance and usability.
 
-### 🎮 Features
+### Features
 - **Scratch & Win gameplay:** Users scratch off surfaces with their mouse (or touch) to reveal hidden prizes or game elements.
 - **Secure authentication:** Integrated Firebase Authentication for sign up and login.
 - **Data management:** User information and prizes stored in Firebase Realtime Database/Firestore.
@@ -20,7 +20,7 @@ As the **developer of the group**, I was responsible for implementing core featu
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 | Technology        | Purpose                                                                 |
 |-------------------|-------------------------------------------------------------------------|
@@ -33,7 +33,7 @@ As the **developer of the group**, I was responsible for implementing core featu
 
 ---
 
-## 👤 My Role
+## My Role
 
 - Built the **entire React front-end** from scratch.
 - Integrated **Firebase Authentication** and **Firebase Database**.
@@ -47,19 +47,19 @@ As the **developer of the group**, I was responsible for implementing core featu
 
 
 
-### 💡 About This Project  
+### About This Project  
 This project demonstrates my ability to:
 - Build interactive, data-driven web apps in React.
 - Integrate Firebase Authentication and databases.
 - Implement advanced front-end features such as canvas graphics and validation.
 - Collaborate in a team environment while leading development.
 
-## 👥 Contributors
+## Contributors
 - **Muayad Fandqle** – Lead Developer (React, Firebase integration, authentication, canvas scratch-off)
 - **Kenningtonz** – Assisted with UI tweaks and feature enhancements
 
 
-## 📦 Installation & Setup  
+## Installation & Setup  
 
 Follow these steps to run the project locally:  
 
