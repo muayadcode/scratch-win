@@ -5,49 +5,56 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 function SignIn() {
-	const navigate = useNavigate();
-	const handleLogin = async (e) => {
-		e.preventDefault();
-		const email = e.target.elements.email.value;
-		const password = e.target.elements.password.value;
+    const navigate = useNavigate();
 
-		try {
-			// Sign in user with email and password
-			await signInWithEmailAndPassword(auth, email, password);
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        const email = e.target.elements.email.value;
+        const password = e.target.elements.password.value;
 
-			console.log("User logged in successfully!");
-			getFirebaseData(email).then(() => navigate("/contest"));
-		} catch (error) {
-			document.getElementById("error").innerHTML = error.message;
-		}
-	};
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            console.log("User logged in successfully!");
+            await getFirebaseData(email);
+            navigate("/contest");
+        } catch (error) {
+            const msg =
+                error.code === "auth/invalid-credential"
+                    ? "Invalid email or password."
+                    : error.message;
+            document.getElementById("error").innerHTML = msg;
+        }
+    };
 
-	return (
-		<main className='cardStyle greenCard'>
-			<h2>Login</h2>
-			<form onSubmit={handleLogin}>
-				<fieldset className='formStyle'>
-					<div className='child100'>
-						<label htmlFor='email'>Email: </label>
-						<input type='text' id='email' placeholder='Email' required />
-					</div>
-					<div className='child100'>
-						<label htmlFor='password'>Password: </label>
-						<input type='password' id='password' placeholder='password' required />
-					</div>
-					<p id='error' className='error'></p>
-				</fieldset>
-
-				<button type='submit' className='blueButton'>
-					Login
-				</button>
-				
-			</form>
-			<Link to="/">
-			<button className="blueButton1">Home</button>
-			</Link>
-		</main>
-	);
+    return (
+        <main className="cardStyle greenCard">
+            <h2>Login</h2>
+            <form onSubmit={handleLogin}>
+                <fieldset className="formStyle">
+                    <div className="child100">
+                        <label htmlFor="email">Email: </label>
+                        <input type="text" id="email" placeholder="Email" required />
+                    </div>
+                    <div className="child100">
+                        <label htmlFor="password">Password: </label>
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Password"
+                            required
+                        />
+                    </div>
+                    <p id="error" className="error"></p>
+                </fieldset>
+                <button type="submit" className="blueButton">
+                    Login
+                </button>
+            </form>
+            <Link to="/">
+                <button className="blueButton1">Home</button>
+            </Link>
+        </main>
+    );
 }
 
 export default SignIn;
