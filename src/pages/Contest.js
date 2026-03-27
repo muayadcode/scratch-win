@@ -11,235 +11,212 @@ import Win from "./Win";
 import Lose from "./Loss";
 
 import {
-	checkLastPlayed,
-	getLocalData,
-	getPrize,
-	saveLastPlayed,
-	getAvailablePrizes,
-	saveDataLocal,
+    checkLastPlayed,
+    getLocalData,
+    getPrize,
+    saveLastPlayed,
+    getAvailablePrizes,
+    saveDataLocal,
 } from "../firebase-functions";
 
-const Contest = ({}) => {
-	const [canPlay, setCanPlay] = useState(false);
-	const [win, setWin] = useState(false);
-	const [prize, setPrize] = useState();
-	const localData = getLocalData();
-	const navigate = useNavigate();
+const Contest = () => {
+    const [canPlay, setCanPlay] = useState(false);
+    const [win, setWin] = useState(false);
+    const [prize, setPrize] = useState();
+    const [finished, setFinished] = useState(false);
+    const navigate = useNavigate();
 
-	const [finished, setFinished] = useState(false);
+    useEffect(() => {
+        const localData = getLocalData();
 
-	useEffect(() => {
-		// Load form data from local storage if available
-		if (localData.email != null) {
-			console.log("localData");
-			checkLastPlayed(localData.email).then((lastPlayed) => {
-				saveDataLocal(localData, lastPlayed);
-				console.log(lastPlayed);
-				if (lastPlayed != null) {
-					const lastPlayedTime = new Date(lastPlayed).getTime();
-					const currentTime = new Date().getTime();
-					const hours = (currentTime - lastPlayedTime) / (1000 * 3600);
-					if (hours < 72) {
-						setCanPlay(false);
-					} else {
-						setCanPlay(true);
-					}
-				} else {
-					setCanPlay(true);
-				}
-			});
-		} else {
-			navigate("/");
-		}
+        // Guard: if no local data or no email, send back to home
+        if (!localData || !localData.email) {
+            navigate("/");
+            return;
+        }
 
-		getAvailablePrizes().then((prizes) => {
-			const numOfPrizes = prizes.length;
-			if (localData.secret == true) {
-				setWin(true);
-			} else {
-				const winChance = numOfPrizes / 69240;
-				setWin(Math.random() < winChance ? true : false);
-			}
-			// console.log(winChance);
-		});
+        checkLastPlayed(localData.email).then((lastPlayed) => {
+            saveDataLocal(localData, lastPlayed);
+            if (lastPlayed != null) {
+                const hours =
+                    (new Date().getTime() - new Date(lastPlayed).getTime()) /
+                    (1000 * 3600);
+                setCanPlay(hours >= 72);
+            } else {
+                setCanPlay(true);
+            }
+        });
 
-		getPrize().then((prize) => {
-			setPrize(prize);
-		});
-	}, []);
+        getAvailablePrizes().then((prizes) => {
+            if (localData.secret === true) {
+                setWin(true);
+            } else {
+                const winChance = prizes.length / 69240;
+                setWin(Math.random() < winChance);
+            }
+        });
 
-	useEffect(() => {
-		if (finished) {
-			saveLastPlayed(localData.email);
-		}
-	}, [finished]);
-	console.log(finished);
-	return (
-		<>
-			{finished == true ? (
-				win == true ? (
-					<Win prize={prize} />
-				) : (
-					<Lose />
-				)
-			) : canPlay ? (
-				<main className='contest'>
-					<h1 className='textCenter'>Good Luck {localData.fName}!</h1>
-					<ScratchCard setFinished={setFinished} isWin={win} />
+        getPrize().then((p) => setPrize(p));
+    }, []);
 
-					<section className='innerCard'>
-						<h2>Instructions</h2>
-						<p>
-							Use your mouse or touchscreen to scratch off the card and uncover prizes
-							ranging from BuyMore Dollars to exciting rewards.{" "}
-						</p>
-						<p>
-							Winners will be selected through a random draw, adding an element of
-							anticipation to each play. If you're fortunate enough to win, be prepared
-							to answer a skill-testing question to claim your prize.{" "}
-						</p>
-						<p>
-							Please note that the leadership team of BuyMore Dollars Inc. reserves the
-							right to remove entries for any reason, ensuring fairness throughout the
-							contest.{" "}
-						</p>
-						<Link to='/legal' state={"/contest"}>
-							Terms and Conditions
-						</Link>
-					</section>
-				</main>
-			) : (
-				<main className='contest'>
-					<section className='innerCard flexCol gap1 flexCenter'>
-						<h2>Sorry, you've already played within the last 72 hours :sadface:</h2>
-						<Link to='/'>
-							<button className='blueButton'>Back to Home </button>
-						</Link>
-					</section>
-				</main>
-			)}
-		</>
-	);
+    useEffect(() => {
+        if (finished) {
+            saveLastPlayed();
+        }
+    }, [finished]);
+
+    const localData = getLocalData();
+    if (!localData) return null;
+
+    return (
+        <>
+            {finished ? (
+                win ? (
+                    <Win prize={prize} />
+                ) : (
+                    <Lose />
+                )
+            ) : canPlay ? (
+                <main className="contest">
+                    <h1 className="textCenter">Good Luck {localData.fName}!</h1>
+                    <ScratchCard setFinished={setFinished} isWin={win} />
+                    <section className="innerCard">
+                        <h2>Instructions</h2>
+                        <p>
+                            Use your mouse or touchscreen to scratch off the card and uncover
+                            prizes ranging from BuyMore Dollars to exciting rewards.
+                        </p>
+                        <p>
+                            Winners will be selected through a random draw. If you're fortunate
+                            enough to win, be prepared to answer a skill-testing question to
+                            claim your prize.
+                        </p>
+                        <p>
+                            The leadership team of BuyMore Dollars Inc. reserves the right to
+                            remove entries for any reason, ensuring fairness throughout the
+                            contest.
+                        </p>
+                        <Link to="/legal" state={"/contest"}>
+                            Terms and Conditions
+                        </Link>
+                    </section>
+                </main>
+            ) : (
+                <main className="contest">
+                    <section className="innerCard flexCol gap1 flexCenter">
+                        <h2>Sorry, you've already played within the last 72 hours.</h2>
+                        <Link to="/">
+                            <button className="blueButton">Back to Home</button>
+                        </Link>
+                    </section>
+                </main>
+            )}
+        </>
+    );
 };
 
 const ScratchCard = ({ setFinished, isWin }) => {
-	const [deviceType, setDeviceType] = useState({ touch: false });
-	const winCards = [winCard1, winCard2, winCard3];
-	const loseCards = [loseCard2, loseCard3];
-	let card = isWin
-		? winCards[Math.floor(Math.random() * winCards.length)]
-		: loseCards[Math.floor(Math.random() * loseCards.length)];
+    const winCards = [winCard1, winCard2, winCard3];
+    const loseCards = [loseCard2, loseCard3];
+    const card = isWin
+        ? winCards[Math.floor(Math.random() * winCards.length)]
+        : loseCards[Math.floor(Math.random() * loseCards.length)];
 
-	useEffect(() => {
-		const container = document.getElementById("scratchCard");
-		const canvas = document.getElementById("scratch");
-		const context = canvas.getContext("2d", { willReadFrequently: true });
-		let scratchPercent = 0;
-		const pixels = () => {
-			return context.getImageData(0, 0, canvas.width, canvas.height);
-		};
+    useEffect(() => {
+        const canvas = document.getElementById("scratch");
+        const context = canvas.getContext("2d", { willReadFrequently: true });
+        const RADIUS = 28;
+        let isDragged = false;
 
-		const init = () => {
-			// context.scale(container.offsetWidth / 1.52, container.offsetHeight / 2.3);
-			canvas.width = 300;
-			canvas.height = 300;
-			context.fillStyle = "#F3CE4F";
-			context.fillRect(0, 0, canvas.width, canvas.height);
-		};
+        canvas.width = 300;
+        canvas.height = 300;
+        context.fillStyle = "#F3CE4F";
+        context.fillRect(0, 0, canvas.width, canvas.height);
 
-		let mouse = {
-			x: null,
-			y: null,
-			radius: 20,
-		};
+        const getXY = (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
 
-		let isDragged = false;
+            if (e.touches && e.touches.length > 0) {
+                return {
+                    x: (e.touches[0].clientX - rect.left) * scaleX,
+                    y: (e.touches[0].clientY - rect.top) * scaleY,
+                };
+            }
+            return {
+                x: (e.clientX - rect.left) * scaleX,
+                y: (e.clientY - rect.top) * scaleY,
+            };
+        };
 
-		const scratch = (mouse) => {
-			context.globalCompositeOperation = "destination-out";
-			context.beginPath();
-			context.arc(mouse.x, mouse.y, mouse.radius, 0, 2 * Math.PI);
-			context.fill();
-		};
+        const scratch = ({ x, y }) => {
+            context.globalCompositeOperation = "destination-out";
+            context.beginPath();
+            context.arc(x, y, RADIUS, 0, 2 * Math.PI);
+            context.fill();
+        };
 
-		const handleStart = (event) => {
-			isDragged = true;
-			getXY(event);
-			scratch(mouse);
-		};
+        const getScratchPercent = () => {
+            const data = context.getImageData(0, 0, canvas.width, canvas.height).data;
+            let cleared = 0;
+            for (let i = 3; i < data.length; i += 4) {
+                if (data[i] === 0) cleared++;
+            }
+            return (cleared / (canvas.width * canvas.height)) * 100;
+        };
 
-		const handleMove = (event) => {
-			if (!deviceType.touch) {
-				event.preventDefault();
-			}
-			if (isDragged) {
-				getXY(event);
-				scratch(mouse);
-			}
-		};
+        const handleStart = (e) => {
+            e.preventDefault();
+            isDragged = true;
+            scratch(getXY(e));
+        };
 
-		const handleEnd = () => {
-			isDragged = false;
-			scratchPercent = getScratchPercent();
-			if (scratchPercent > 50) {
-				setFinished(true);
-			}
-			// console.log(getScratchPercent());
-		};
+        const handleMove = (e) => {
+            e.preventDefault();
+            if (isDragged) scratch(getXY(e));
+        };
 
-		const getXY = (e) => {
-			mouse.x =
-				(!deviceType.touch ? e.pageX : e.touches[0].x) - container.offsetLeft - 60;
-			mouse.y =
-				(!deviceType.touch ? e.pageY : e.touches[0].y) - canvas.offsetTop - 20;
-		};
+        const handleEnd = (e) => {
+            e.preventDefault();
+            isDragged = false;
+            if (getScratchPercent() > 50) setFinished(true);
+        };
 
-		function getScratchPercent() {
-			let pixelsTemp = pixels().data;
-			let pixelCount = 0;
-			for (let i = 0; i < pixelsTemp.length; i += 4) {
-				if (pixelsTemp[i + 3] === 0) {
-					pixelCount++;
-				}
-			}
-			return (pixelCount / (canvas.width * canvas.height)) * 100;
-		}
+        canvas.addEventListener("mousedown", handleStart);
+        canvas.addEventListener("mousemove", handleMove);
+        canvas.addEventListener("mouseup", handleEnd);
+        canvas.addEventListener("mouseleave", handleEnd);
+        canvas.addEventListener("touchstart", handleStart, { passive: false });
+        canvas.addEventListener("touchmove", handleMove, { passive: false });
+        canvas.addEventListener("touchend", handleEnd, { passive: false });
 
-		const canvasEvents = {
-			down: deviceType.touch ? "touchstart" : "mousedown",
-			move: deviceType.touch ? "touchmove" : "mousemove",
-			up: deviceType.touch ? "touchend" : "mouseup",
-		};
+        return () => {
+            canvas.removeEventListener("mousedown", handleStart);
+            canvas.removeEventListener("mousemove", handleMove);
+            canvas.removeEventListener("mouseup", handleEnd);
+            canvas.removeEventListener("mouseleave", handleEnd);
+            canvas.removeEventListener("touchstart", handleStart);
+            canvas.removeEventListener("touchmove", handleMove);
+            canvas.removeEventListener("touchend", handleEnd);
+        };
+    }, []);
 
-		canvas.addEventListener(canvasEvents.down, handleStart);
-		canvas.addEventListener(canvasEvents.move, handleMove);
-		canvas.addEventListener(canvasEvents.up, handleEnd);
-		canvas.addEventListener("mouseleave", handleEnd);
-
-		const isTouchDevice = () => {
-			try {
-				document.createEvent("TouchEvent");
-				return true;
-			} catch (e) {
-				return false;
-			}
-		};
-
-		setDeviceType({ touch: isTouchDevice() });
-
-		init();
-	}, []);
-
-	return (
-		<section id='scratchContainer'>
-			<div id='scratchCard'>
-				<div className='base'>
-					<img src={card} alt='scratch card' />
-				</div>
-				<canvas id='scratch' width={300} height={300}></canvas>
-			</div>
-		</section>
-	);
+    return (
+        <section id="scratchContainer">
+            <div id="scratchCard">
+                <div className="base">
+                    <img src={card} alt="scratch card" />
+                </div>
+                <canvas
+                    id="scratch"
+                    width={300}
+                    height={300}
+                    style={{ touchAction: "none", cursor: "crosshair" }}
+                />
+            </div>
+        </section>
+    );
 };
 
 export default Contest;
